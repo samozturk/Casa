@@ -13,11 +13,18 @@ class Rooms(BaseModel):
     topics: Union[Topic, List[Topic]]
     status: Union[Status, List[Status]]
 
+class ControlResponse(TypedDict):
+    command: Literal["scene", "on", "off"]
+    scene_name: Union[str, None]
+    room_name: Union[str, None]
+    
 
 class State(TypedDict):
     messages: List[BaseMessage]
     intent: str | None
     rooms: Rooms
+    filename: str | None
+    file_content: str | None
 
     policy_ok: bool
     policy_feedback: str | None

@@ -1,0 +1,70 @@
+# config/lights.yaml
+# -----------------
+
+# Global metadata
+house: "The Bastion"
+timezone: "Amsterdam/Europe"
+
+# Rooms → Lights → Settings
+rooms:
+  office:
+    lights:
+      - id: philips_hue
+        name: "Background Light"
+        control_interface: "hue_api"
+        ip_address: "192.168.178.21"
+        channel: 1
+        functions:
+          - get_hue_rooms
+          - set_hue_scene
+          - dim_room
+
+        scenes:
+          - "Rome"
+          - "Honolulu"
+          - "Malibu pink"
+          - "Island warmth"
+          - "Cancun"
+          - "Malibu pink 3"
+          - "Dreamy dusk"
+          - "Pumpkin spice"
+          - "Malibu pink 2"
+          - "Under the tree"
+          - "Festive fun"
+          - "Ruby glow"
+          - "Chinatown"
+          - "Tokyo"
+          - "Arctic aurora"
+          - "Jolly"
+          - "Vapor wave"
+          - "Color burst"
+          - "Downtown drizzle"
+          - "Autumn gold"
+          - "November haze"
+          - "Warm embrace"
+
+      - id: string_lights_1
+        name: "String Lights"
+        type: "iot"
+        channel: 2
+
+  kitchen:
+    lights:
+      - id: kt_ceiling
+        name: "Kitchen Ceiling"
+        type: "iot"
+        channel: 3
+
+  bedroom:
+    lights:
+      - id: br_left
+        name: "Bedside Lamp"
+        type: "iot"
+        channel: 4
+      - id: br_right
+        name: "Bedside Lamp"
+        type: "iot"
+        channel: 4
+# Depending on the called light and scene, the system will call the proper functions.
+# For iot lights, it will publish to MQTT topic.
+# For Philips Hue lights, it will use the Hue API to set the scene.

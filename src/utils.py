@@ -1,3 +1,16 @@
+
+import yaml
+from pathlib import Path
+
+CONFIG_PATH = Path(__file__).resolve().parent.parent / "config" / "home.yaml"
+
+def load_config(config_path: Path = CONFIG_PATH):
+    with config_path.open() as f:
+        return yaml.safe_load(f)
+
+
+
+
 def publish_mqtt_message(topic: str, message: str, port: int = 1883, ip_address: str = "tnas"):
     '''Publish a single MQTT message to a topic.
     Args:
@@ -18,3 +31,7 @@ def publish_mqtt_message(topic: str, message: str, port: int = 1883, ip_address:
     client.publish(topic, payload=message, qos=0)
 
 # TODO: add subscribe to an ACK topic to confirm message delivery and function completion
+
+
+
+
