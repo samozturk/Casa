@@ -6,7 +6,7 @@ from langchain_core.messages import HumanMessage
 
 from models import Rooms, State, Room, Topic, Status
 from prompts import room_parser, llm, CONTROL_PARAMETER_PROMPT
-from utils import publish_mqtt_message
+from utils.utils import publish_mqtt_message
 
 
 def control_parameter_node(state: State):

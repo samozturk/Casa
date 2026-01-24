@@ -16,8 +16,8 @@ rooms:
         channel: 1
         functions:
           - get_hue_rooms
+          - get_hue_rooms
           - set_hue_scene
-          - dim_room
 
         scenes:
           - "Rome"
@@ -45,25 +45,25 @@ rooms:
 
       - id: string_lights_1
         name: "String Lights"
-        type: "iot"
+        control_interface: "iot"
         channel: 2
 
   kitchen:
     lights:
       - id: kt_ceiling
         name: "Kitchen Ceiling"
-        type: "iot"
+        control_interface: "iot"
         channel: 3
 
   bedroom:
     lights:
       - id: br_left
         name: "Bedside Lamp"
-        type: "iot"
+        control_interface: "iot"
         channel: 4
       - id: br_right
         name: "Bedside Lamp"
-        type: "iot"
+        control_interface: "iot"
         channel: 4
 # Depending on the called light and scene, the system will call the proper functions.
 # For iot lights, it will publish to MQTT topic.

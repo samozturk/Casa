@@ -5,7 +5,6 @@ from typing import List
 
 bridge = Bridge("192.168.178.21")
 
-# TODO: write docstrings
 # Functions to gather information from hue bridge for validation
 def get_hue_scenes(bridge: Bridge=bridge):
     scenes_dict = {}
@@ -21,18 +20,28 @@ def get_hue_scenes(bridge: Bridge=bridge):
         scenes_dict['group'].append(scene_data.get('group'))
     return scenes_dict
 
-def get_hue_rooms(bridge: Bridge)-> List[str]:
-    '''Gets all the room names from the hue bridge
-
+def get_hue_room_states(bridge: Bridge)-> dict:
+    '''Gets all the room states from the hue bridge
     Args:
         bridge (Bridge): Bridge object that hue api needs
     Returns:
-        hue_rooms (List[str]): Name of hue rooms
+        hue_room_states (dict): Name of hue rooms and their current brightness
     '''
-    hue_rooms = []
-    for id, room in bridge.get_group().items():
-        hue_rooms.append(room['name'])
-    return hue_rooms
+    hue_room_states = {}
+    groups = bridge.get_api()['groups']
+    for group_id in groups:
+        current_state = {}
+        group = bridge.get_group(int(group_id))
+        name = group['name']
+        current_brightness = group['action']['bri']
+        state = group['state']
+        current_state[name] = {
+            'bri': current_brightness,
+            'on': state['any_on']
+        }
+        hue_room_states[name] = current_state[name]
+    return hue_room_states
+
 
 # Hue control commands
 def set_hue_scene(scene_name: str, room_name: str, bridge: Bridge=bridge):
@@ -55,7 +64,14 @@ def set_hue_scene(scene_name: str, room_name: str, bridge: Bridge=bridge):
         else:
             return f"Scene '{scene_name}' not found."
 
-def turn_hue_light_on_off(room_name: str, status: str, bridge: Bridge=bridge):
-    lights = bridge.get_light_objects('name')
-    if room_name in get_hue_rooms(bridge=bridge):
-        
+def dim_hue_lights(room_name: str, brightness: int, bridge: Bridge=bridge, transitiontime: int=40):
+    '''Dim Philips Hue lights in a room to a specified brightness level.
+    Args:
+        room_name (str): Name of the room where lights need to be dimmed.
+        brightness (int): Brightness level (0-254) to set the lights to.
+        bridge (Bridge, optional): Hue Bridge object. Defaults to bridge.
+        transitiontime (int, optional): Time in deciseconds for the transition. Defaults to 40 (4 seconds).
+    '''
+    group_id = bridge.get_group_id_by_name(room_name)
+    command =  {'transitiontime' : transitiontime, 'on' : True, 'bri' : brightness}
+    bridge.set_group(group_id, command)

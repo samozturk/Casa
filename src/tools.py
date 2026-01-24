@@ -15,7 +15,7 @@ import os
 
 from models import Rooms, State, Room, Topic, Status
 from prompts import room_parser, llm, INTENT_PROMPT, CONTROL_PARAMETER_PROMPT, READ_FILE_SELECTION_PROMPT
-from utils import publish_mqtt_message
+from utils.utils import publish_mqtt_message
 
 # llm = ChatOllama(
 #     model="llama70b",
